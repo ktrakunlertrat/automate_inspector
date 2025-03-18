@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
         await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { value: '284' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
