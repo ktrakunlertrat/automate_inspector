@@ -36,6 +36,43 @@ const { chromium } = require('playwright');
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
         // 8️⃣ รอให้ช่อง input ปรากฏ แล้วกรอกข้อมูล
+        //1.1 บ้านพักเด็กและครอบครัว
+        //งบประมาณที่ได้รับการจัดสรร (บาท)
+        await page.waitForSelector('input[name="disbursement_mso[3][Operating_budget][3][number_of_allocate]"]');
+        await page.fill('input[name="disbursement_mso[3][Operating_budget][3][number_of_allocate]"]', '50000'); //งบดำเนินงาน
+
+        await page.waitForSelector('input[name="disbursement_mso[3][investment_budget][3][number_of_allocate]"]');
+        await page.fill('input[name="disbursement_mso[3][investment_budget][3][number_of_allocate]"]', '50000'); //งบลงทุน
+
+        await page.waitForSelector('input[name="disbursement_mso[3][subsidy_budget][3][number_of_allocate]"]');
+        await page.fill('input[name="disbursement_mso[3][subsidy_budget][3][number_of_allocate]"]', '50000'); //งบเงินอุดหนุน
+
+        await page.waitForSelector('input[name="disbursement_mso[3][personnel_budget][3][number_of_allocate]"]');
+        await page.fill('input[name="disbursement_mso[3][personnel_budget][3][number_of_allocate]"]', '50000'); //งบบุคลากร
+
+        await page.waitForSelector('input[name="disbursement_mso[3][expenditure_budget][3][number_of_allocate]"]');
+        await page.fill('input[name="disbursement_mso[3][expenditure_budget][3][number_of_allocate]"]', '50000'); //งบรายจ่ายอื่น
+
+        //การเบิกจ่าย(บาท)
+        await page.waitForSelector('input[name="disbursement_mso[3][Operating_budget][3][number_of_disbursement]"]');
+        await page.fill('input[name="disbursement_mso[3][Operating_budget][3][number_of_disbursement]"]', '20000'); //งบดำเนินงาน
+
+        await page.waitForSelector('input[name="disbursement_mso[3][investment_budget][3][number_of_disbursement]"]');
+        await page.fill('input[name="disbursement_mso[3][investment_budget][3][number_of_disbursement]"]', '20000'); //งบลงทุน
+
+        await page.waitForSelector('input[name="disbursement_mso[3][subsidy_budget][3][number_of_disbursement]"]');
+        await page.fill('input[name="disbursement_mso[3][subsidy_budget][3][number_of_disbursement]"]', '20000'); //งบเงินอุดหนุน
+
+        await page.waitForSelector('input[name="disbursement_mso[3][personnel_budget][3][number_of_disbursement]"]');
+        await page.fill('input[name="disbursement_mso[3][personnel_budget][3][number_of_disbursement]"]', '20000'); //งบบุคลากร
+
+        await page.waitForSelector('input[name="disbursement_mso[3][expenditure_budget][3][number_of_disbursement]"]');
+        await page.fill('input[name="disbursement_mso[3][expenditure_budget][3][number_of_disbursement]"]', '20000'); //งบรายจ่ายอื่น
+
+        await page.waitForSelector('textarea[name="disbursement_mso[3][results_of_disbursement_mso][3][detail]"]');
+        await page.fill('textarea[name="disbursement_mso[3][results_of_disbursement_mso][3][detail]"]', 'รายละเอียดการใช้งบประมาณ'); // กรอกรายละเอียด
+        
+        //1.2 บ้านพักเด็กและครอบครัว
         await page.waitForSelector('input[name="data_fund_budget_only[3][number_of_allocated]"]');
         await page.fill('input[name="data_fund_budget_only[3][number_of_allocated]"]', '50000'); // กรอกจำนวนงบที่จัดสรร
 
@@ -45,11 +82,21 @@ const { chromium } = require('playwright');
         await page.waitForSelector('textarea[name="data_fund_budget_only[3][detail]"]');
         await page.fill('textarea[name="data_fund_budget_only[3][detail]"]', 'รายละเอียดการใช้งบประมาณ'); // กรอกรายละเอียด
 
+        //1.3 บ้านพักเด็กและครอบครัว
+        await page.waitForSelector('input[name="data_provincial_group_budget[3][number_of_allocated]"]');
+        await page.fill('input[name="data_provincial_group_budget[3][number_of_allocated]"]', '50000'); // กรอกจำนวนงบที่จัดสรร
+
+        await page.waitForSelector('input[name="data_provincial_group_budget[3][number_of_disbursement]"]');
+        await page.fill('input[name="data_provincial_group_budget[3][number_of_disbursement]"]', '10000'); // กรอกจำนวนงบที่เบิกจ่าย
+
+        await page.waitForSelector('textarea[name="data_provincial_group_budget[3][detail]"]');
+        await page.fill('textarea[name="data_provincial_group_budget[3][detail]"]', 'รายละเอียดการใช้งบประมาณ'); // กรอกรายละเอียด
+
         console.log('กรอกข้อมูลสำเร็จ!');
 
         // 9️⃣ ค้างหน้าไว้ 10 วินาที
         // console.log('รอ 10 วินาที...');
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(60000);
 
     } catch (error) {
         console.error('เกิดข้อผิดพลาด:', error);
