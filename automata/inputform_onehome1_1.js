@@ -32,8 +32,8 @@ const { chromium } = require('playwright');
         await page.click('//button[contains(., "1.1 การเบิกจ่ายงบประมาณและค่าใช้จ่ายภาครัฐปีงบประมาณ พ.ศ. 2568")]');
 
         // 7️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href*="time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href*="time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0101Controller?time_count=1"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0101Controller?time_count=1"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
