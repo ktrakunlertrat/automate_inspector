@@ -58,79 +58,79 @@ const { chromium } = require('playwright');
 
         //ส่วนที่ 1: ประสิทธิภาพการเบิกจ่ายงบประมาณได้รับการจัดสรรภาพรวม
         // //1.1 หน้า 1.1
-        // for (let i = 0; i < data.length; i++) {
-        //     const { index, allocated, disbursement, detail } = data[i];
+        for (let i = 0; i < data.length; i++) {
+            const { index, allocated, disbursement, detail } = data[i];
             
-        //     //งบประมาณที่ได้รับการจัดสรร (บาท)
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_allocate]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_allocate]"]`, allocated); //งบดำเนินงาน
+            //งบประมาณที่ได้รับการจัดสรร (บาท)
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_allocate]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_allocate]"]`, allocated); //งบดำเนินงาน
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_allocate]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_allocate]"]`, allocated); //งบลงทุน
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_allocate]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_allocate]"]`, allocated); //งบลงทุน
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_allocate]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_allocate]"]`, allocated); //งบเงินอุดหนุน
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_allocate]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_allocate]"]`, allocated); //งบเงินอุดหนุน
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_allocate]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_allocate]"]`, allocated); //งบบุคลากร
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_allocate]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_allocate]"]`, allocated); //งบบุคลากร
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_allocate]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_allocate]"]`, allocated); //งบรายจ่ายอื่น
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_allocate]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_allocate]"]`, allocated); //งบรายจ่ายอื่น
 
-        // //การเบิกจ่าย(บาท)
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_disbursement]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_disbursement]"]`, disbursement); //งบดำเนินงาน
+        //การเบิกจ่าย(บาท)
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_disbursement]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][Operating_budget][${index}][number_of_disbursement]"]`, disbursement); //งบดำเนินงาน
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_disbursement]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_disbursement]"]`, disbursement); //งบลงทุน
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_disbursement]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][investment_budget][${index}][number_of_disbursement]"]`, disbursement); //งบลงทุน
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_disbursement]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_disbursement]"]`, disbursement); //งบเงินอุดหนุน
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_disbursement]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][subsidy_budget][${index}][number_of_disbursement]"]`, disbursement); //งบเงินอุดหนุน
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_disbursement]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_disbursement]"]`, disbursement); //งบบุคลากร
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_disbursement]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][personnel_budget][${index}][number_of_disbursement]"]`, disbursement); //งบบุคลากร
 
-        // await page.waitForSelector(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_disbursement]"]`);
-        // await page.fill(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_disbursement]"]`, disbursement); //งบรายจ่ายอื่น
+        await page.waitForSelector(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_disbursement]"]`);
+        await page.fill(`input[name="disbursement_mso[${index}][expenditure_budget][${index}][number_of_disbursement]"]`, disbursement); //งบรายจ่ายอื่น
 
-        // await page.waitForSelector(`textarea[name="disbursement_mso[${index}][results_of_disbursement_mso][${index}][detail]"]`);
-        // await page.fill(`textarea[name="disbursement_mso[${index}][results_of_disbursement_mso][${index}][detail]"]`, detail); // กรอกรายละเอียด
+        await page.waitForSelector(`textarea[name="disbursement_mso[${index}][results_of_disbursement_mso][${index}][detail]"]`);
+        await page.fill(`textarea[name="disbursement_mso[${index}][results_of_disbursement_mso][${index}][detail]"]`, detail); // กรอกรายละเอียด
 
-        //     console.log(`กรอกข้อมูลหน่วยงานที่ ${index} 1.1 สำเร็จ!`);
-        // }
+            console.log(`กรอกข้อมูลหน่วยงานที่ ${index} 1.1 สำเร็จ!`);
+        }
 
-        // //1.2 หน้า 1.1
-        // // 1.2 - 1.5 กรอกข้อมูลใน loop
-        // for (let i = 0; i < data.length; i++) {
-        //     const { index, allocated, disbursement, detail } = data[i];
+        //1.2 หน้า 1.1
+        // 1.2 - 1.5 กรอกข้อมูลใน loop
+        for (let i = 0; i < data.length; i++) {
+            const { index, allocated, disbursement, detail } = data[i];
             
-        //     await page.waitForSelector(`input[name="data_fund_budget_only[${index}][number_of_allocated]"]`);
-        //     await page.fill(`input[name="data_fund_budget_only[${index}][number_of_allocated]"]`, allocated); // กรอกจำนวนงบที่จัดสรร
+            await page.waitForSelector(`input[name="data_fund_budget_only[${index}][number_of_allocated]"]`);
+            await page.fill(`input[name="data_fund_budget_only[${index}][number_of_allocated]"]`, allocated); // กรอกจำนวนงบที่จัดสรร
 
-        //     await page.waitForSelector(`input[name="data_fund_budget_only[${index}][number_of_disbursement]"]`);
-        //     await page.fill(`input[name="data_fund_budget_only[${index}][number_of_disbursement]"]`, disbursement); // กรอกจำนวนงบที่เบิกจ่าย
+            await page.waitForSelector(`input[name="data_fund_budget_only[${index}][number_of_disbursement]"]`);
+            await page.fill(`input[name="data_fund_budget_only[${index}][number_of_disbursement]"]`, disbursement); // กรอกจำนวนงบที่เบิกจ่าย
 
-        //     await page.waitForSelector(`textarea[name="data_fund_budget_only[${index}][detail]"]`);
-        //     await page.fill(`textarea[name="data_fund_budget_only[${index}][detail]"]`, detail); // กรอกรายละเอียด
+            await page.waitForSelector(`textarea[name="data_fund_budget_only[${index}][detail]"]`);
+            await page.fill(`textarea[name="data_fund_budget_only[${index}][detail]"]`, detail); // กรอกรายละเอียด
 
-        //     console.log(`กรอกข้อมูลหน่วยงานที่ ${index} 1.2 สำเร็จ!`);
-        // }
+            console.log(`กรอกข้อมูลหน่วยงานที่ ${index} 1.2 สำเร็จ!`);
+        }
 
-        // //1.3 หน้า 1.1
-        // for (let i = 0; i < data.length; i++) {
-        //     const { index, allocated, disbursement, detail } = data[i];
+        //1.3 หน้า 1.1
+        for (let i = 0; i < data.length; i++) {
+            const { index, allocated, disbursement, detail } = data[i];
             
-        //     await page.waitForSelector(`input[name="data_provincial_group_budget[${index}][number_of_allocated]"]`);
-        //     await page.fill(`input[name="data_provincial_group_budget[${index}][number_of_allocated]"]`, allocated); // กรอกจำนวนงบที่จัดสรร
+            await page.waitForSelector(`input[name="data_provincial_group_budget[${index}][number_of_allocated]"]`);
+            await page.fill(`input[name="data_provincial_group_budget[${index}][number_of_allocated]"]`, allocated); // กรอกจำนวนงบที่จัดสรร
 
-        //     await page.waitForSelector(`input[name="data_provincial_group_budget[${index}][number_of_disbursement]"]`);
-        //     await page.fill(`input[name="data_provincial_group_budget[${index}][number_of_disbursement]"]`, disbursement); // กรอกจำนวนงบที่เบิกจ่าย
+            await page.waitForSelector(`input[name="data_provincial_group_budget[${index}][number_of_disbursement]"]`);
+            await page.fill(`input[name="data_provincial_group_budget[${index}][number_of_disbursement]"]`, disbursement); // กรอกจำนวนงบที่เบิกจ่าย
 
-        //     await page.waitForSelector(`textarea[name="data_provincial_group_budget[${index}][detail]"]`);
-        //     await page.fill(`textarea[name="data_provincial_group_budget[${index}][detail]"]`, detail); // กรอกรายละเอียด
+            await page.waitForSelector(`textarea[name="data_provincial_group_budget[${index}][detail]"]`);
+            await page.fill(`textarea[name="data_provincial_group_budget[${index}][detail]"]`, detail); // กรอกรายละเอียด
 
-        //     console.log(`กรอกข้อมูลหน่วยงานที่ ${index} 1.3 สำเร็จ!`);
-        // }
+            console.log(`กรอกข้อมูลหน่วยงานที่ ${index} 1.3 สำเร็จ!`);
+        }
 
         //ปัญหา/อุปสรรค และข้อเสนอแนะ
         await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
