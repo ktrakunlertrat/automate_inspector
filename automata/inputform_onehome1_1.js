@@ -26,8 +26,10 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ คลิกเมนู "1.1 การเบิกจ่ายงบประมาณ..."
-        await page.waitForSelector('.menu button'); // รอให้เมนูโหลด
-        await page.click('.menu button'); // คลิกเมนู
+        // await page.waitForSelector('.menu button'); // รอให้เมนูโหลด
+        // await page.click('.menu button'); // คลิกเมนู
+        await page.waitForSelector('//button[contains(., "1.1 การเบิกจ่ายงบประมาณและค่าใช้จ่ายภาครัฐปีงบประมาณ พ.ศ. 2568")]');
+        await page.click('//button[contains(., "1.1 การเบิกจ่ายงบประมาณและค่าใช้จ่ายภาครัฐปีงบประมาณ พ.ศ. 2568")]');
 
         // 7️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
         await page.waitForSelector('a[href*="time_count=1"]'); // รอให้ลิงก์โหลด
@@ -96,7 +98,7 @@ const { chromium } = require('playwright');
 
         // 9️⃣ ค้างหน้าไว้ 10 วินาที
         // console.log('รอ 10 วินาที...');
-        await page.waitForTimeout(60000);
+        await page.waitForTimeout(10000);
 
     } catch (error) {
         console.error('เกิดข้อผิดพลาด:', error);

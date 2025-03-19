@@ -38,8 +38,10 @@ const { chromium } = require('playwright');
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
         // 8️⃣ คลิกเมนู "1.1 การเบิกจ่ายงบประมาณ..."
-        await page.waitForSelector('.menu button'); // รอให้เมนูโหลด
-        await page.click('.menu button'); // คลิกเมนู
+        // await page.waitForSelector('.menu button'); // รอให้เมนูโหลด
+        // await page.click('.menu button'); // คลิกเมนู
+        await page.waitForSelector('//button[contains(., "1.1 การเบิกจ่ายงบประมาณและค่าใช้จ่ายภาครัฐปีงบประมาณ พ.ศ. 2568")]');
+        await page.click('//button[contains(., "1.1 การเบิกจ่ายงบประมาณและค่าใช้จ่ายภาครัฐปีงบประมาณ พ.ศ. 2568")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
         await page.waitForSelector('a[href*="time_count=1"]'); // รอให้ลิงก์โหลด
