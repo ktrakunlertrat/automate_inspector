@@ -87,31 +87,48 @@ const { chromium } = require('playwright');
         await page.fill('textarea[name="number_results_of_mso[4][detail]"]', 'บ้านพักเด็ก'); // บ้านอื่นๆ
 
         const data = [
-            { index: 1, housing_needs: '20000', targets_housing: '20000', targets_budget: '20000',  targets_in_mso_logbook: '20000', detail1: 'คำชี้แจง (กรณีไม่ได้บันทึกรายชื่อครบจำนวน) 1' },
-            { index: 2, housing_needs: '20000', targets_housing: '20000', targets_budget: '20000',  targets_in_mso_logbook: '20000', detail1: 'คำชี้แจง (กรณีไม่ได้บันทึกรายชื่อครบจำนวน) 2' },
-            { index: 3, housing_needs: '20000', targets_housing: '20000', targets_budget: '20000',  targets_in_mso_logbook: '20000', detail1: 'คำชี้แจง (กรณีไม่ได้บันทึกรายชื่อครบจำนวน) 3' },
-            { index: 4, housing_needs: '20000', targets_housing: '20000', targets_budget: '20000',  targets_in_mso_logbook: '20000', detail1: 'คำชี้แจง (กรณีไม่ได้บันทึกรายชื่อครบจำนวน) 4' },
+            { index: 1, number: '20000', detail: 'คำชี้แจง 1' },
+            { index: 2, number: '20000', detail: 'คำชี้แจง 2' },
+            { index: 3, number: '20000', detail: 'คำชี้แจง 3' },
+            { index: 4, number: '20000', detail: 'คำชี้แจง 4' },
         ];
 
         for (let i = 0; i < data.length; i++) {
-            const { index, housing_needs, targets_housing, targets_budget, targets_in_mso_logbook, detail1 } = data[i];
+            const { index, number, detail } = data[i];
             
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_housing_needs]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_housing_needs]"]`, housing_needs); // ความต้องการด้านที่อยู่อาศัย (ราย)
+            await page.fill(`input[name="number_results_of_mso[${index}][number_housing_needs]"]`, number); // ความต้องการด้านที่อยู่อาศัย (ราย)
 
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_targets_housing]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_housing]"]`, targets_housing); // จำนวน (ราย)
+            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_housing]"]`, number); // จำนวน (ราย) เป้าหมายการดำเนินงาน ปี 2568
 
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_targets_budget]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_budget]"]`, targets_budget); // เงินที่ได้รับการจัดสรร
+            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_budget]"]`, number); // เงินที่ได้รับการจัดสรร
 
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_targets_in_mso_logbook]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_in_mso_logbook]"]`, targets_in_mso_logbook); // บันทึกลงในระบบ MSO-Logbook (ราย)
+            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_in_mso_logbook]"]`, number); // บันทึกลงในระบบ MSO-Logbook (ราย)
 
             await page.waitForSelector(`textarea[name="number_results_of_mso[${index}][detail_targets]"]`);
-            await page.fill(`textarea[name="number_results_of_mso[${index}][detail_targets]"]`, detail1); // คำชี้แจง (กรณีไม่ได้บันทึกรายชื่อครบจำนวน)
+            await page.fill(`textarea[name="number_results_of_mso[${index}][detail_targets]"]`, detail); // คำชี้แจง
+        }
 
-            console.log(`กรอกข้อมูลกลุ่มเป้าหมาย ${index} 2.10 สำเร็จ!`);
+        for (let i = 0; i < data.length; i++) {
+            const { index, number, detail } = data[i];
+            
+            await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_housing]"]`);
+            await page.fill(`input[name="number_results_of_mso[${index}][number_results_housing]"]`, number); // จำนวน (ราย) ผลการดำเนินงาน ปี 2568
+
+            await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_disbursement]"]`);
+            await page.fill(`input[name="number_results_of_mso[${index}][number_results_disbursement]"]`, number); // ผลการเบิกจ่าย (บาท)
+
+            await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_in_mso_logbook]"]`);
+            await page.fill(`input[name="number_results_of_mso[${index}][number_results_in_mso_logbook]"]`, number); // กลุ่มเป้าหมายที่อยู่ระบบ MSO-Logbook (ราย)
+
+            await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_budget]"]`);
+            await page.fill(`input[name="number_results_of_mso[${index}][number_results_budget]"]`, number); // การเบิกจ่าย (บาท)
+
+            await page.waitForSelector(`textarea[name="number_results_of_mso[${index}][detail_explanation]"]`);
+            await page.fill(`textarea[name="number_results_of_mso[${index}][detail_explanation]"]`, detail); // คำชี้แจง
         }
 
         // //ปัญหา/อุปสรรค และข้อเสนอแนะ
