@@ -131,46 +131,121 @@ const { chromium } = require('playwright');
             await page.fill(`textarea[name="number_results_of_mso[${index}][detail_explanation]"]`, detail); // คำชี้แจง
         }
 
-        // //ปัญหา/อุปสรรค และข้อเสนอแนะ
-        // await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
-        // await page.fill('textarea[name="data_Problems[1][problems_obstacles]"]', 'ปัญหาเเละอุปสรรค'); // ปัญหาเเละอุปสรรค
+        console.log('กรอกข้อมูลส่วนที่ 1 สำเร็จ!');
 
-        // await page.waitForSelector('textarea[name="data_Problems[1][suggestions]"]');
-        // await page.fill('textarea[name="data_Problems[1][suggestions]"]', 'ข้อเสนอแนะ'); // ข้อเสนอแนะ
+        //ส่วนที่ 2 : การบูรณาการการปรับสภาพที่อยู่อาศัย
+        //2.1 การบูรณาการด้านงบประมาณ
+        await page.waitForSelector('input[name="number_houses_in_mso"]'); // การบูรณาการงบประมาณภายในกระทรวง พม. (หลัง)
+        await page.fill('input[name="number_houses_in_mso"]','2000'); // จำนวน
 
-        // console.log('กรอกข้อมูลปัญหา/อุปสรรคสำเร็จ!');
+        await page.waitForSelector('input[name="number_buddet_in_mso"]'); // การบูรณาการงบประมาณภายในกระทรวง พม. (หลัง)
+        await page.fill('input[name="number_buddet_in_mso"]','50000'); // รวมเป็นเงิน
 
-        // //ไฟล์ประกอบรายงาน
-        // await page.waitForSelector('input[name="file"]'); 
-        // await page.setInputFiles('input[name="file"]', 'D:\\งาน\\playwright\\test_file.jpg');  // ไฟล์
+        await page.waitForSelector('input[name="number_houses_out_mso"]'); // การบูรณาการงบประมาณกับหน่วยงานภายนอกกระทรวง พม. (หลัง)
+        await page.fill('input[name="number_houses_out_mso"]','2000'); // จำนวน
 
-        // await page.waitForSelector('textarea[name="descriptionInput"]');
-        // await page.fill('textarea[name="descriptionInput"]', 'คำอธิบาย'); // คำอธิบาย
+        await page.waitForSelector('input[name="number_buddet_out_mso"]'); // การบูรณาการงบประมาณกับหน่วยงานภายนอกกระทรวง พม. (หลัง)
+        await page.fill('input[name="number_buddet_out_mso"]','50000'); // รวมเป็นเงิน
 
-        // console.log('อัปโหลดไฟล์ประกอบรายงานสำเร็จ!');
+        console.log('กรอกข้อมูลส่วนที่ 2 2.1 สำเร็จ!');
 
-        // //ผู้รายงาน
-        // await page.waitForSelector('input[name="first_name_reporter"]');
-        // await page.fill('input[name="first_name_reporter"]', 'ผู้รายงาน1'); // ชื่อ
+        //2.2 การบูรณาการด้านอื่น ๆ (เช่น แรงงาน วัสดุอุปกรณ์ เครื่องอุปโภคบริโภค การเกษตร/ปศุสัตว์)
+        await page.waitForSelector('input[name="housing_other[check_have]"][value="true"]');
+        await page.waitForSelector('input[name="housing_other[check_have]"][value="false"]');
 
-        // await page.waitForSelector('input[name="last_name_reporter"]');
-        // await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
+        const options3 = [
+            'input[name="housing_other[check_have]"][value="true"]',
+            'input[name="housing_other[check_have]"][value="false"]'
+        ];
 
-        // await page.waitForSelector('input[name="position_name_reporter"]');
-        // await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน1.2'); // ตำแหน่ง
+        const randomOption3 = options3[Math.floor(Math.random() * options3.length)];
 
-        // console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
+        await page.check(randomOption3);
 
-        // //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        // await page.waitForSelector('input[name="examine"]'); 
-        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        await page.waitForSelector('input[name="government[check]"]'); 
+        await page.check('input[name="government[check]"]'); // หน่วยงานรัฐ
 
-        // await page.waitForSelector('textarea[name="opinion"]');
-        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        await page.waitForSelector('textarea[name="government[detail]"]');
+        await page.fill('textarea[name="government[detail]"]', 'อธิบาย'); // หน่วยงานรัฐ อธิบาย
 
-        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        await page.waitForSelector('input[name="private[check]"]'); 
+        await page.check('input[name="private[check]"]'); // หน่วยงานเอกชน
 
-        // console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
+        await page.waitForSelector('textarea[name="private[detail]"]');
+        await page.fill('textarea[name="private[detail]"]', 'อธิบาย'); // หน่วยงานเอกชน อธิบาย
+
+        await page.waitForSelector('input[name="other[check]"]'); 
+        await page.check('input[name="other[check]"]'); // อื่นๆ
+
+        await page.waitForSelector('textarea[name="other[detail]"]');
+        await page.fill('textarea[name="other[detail]"]', 'อธิบาย'); // อื่นๆ อธิบาย
+
+        console.log('กรอกข้อมูลส่วนที่ 2 2.2 สำเร็จ!');
+
+        //2.3 มีการใช้วัสดุที่เป็นมิตรกับสิ่งแวดล้อม (ถ้ามีให้ระบุ)
+        await page.waitForSelector('input[name="radio"][value="false"]');
+        await page.waitForSelector('input[name="radio"][value="true"]');
+
+        const options4 = [
+            'input[name="radio"][value="false"]',
+            'input[name="radio"][value="true"]',
+        ];
+
+        const randomOption4 = options4[Math.floor(Math.random() * options4.length)];
+
+        await page.check(randomOption4);
+
+        // เงื่อนไขสำหรับการกรอกข้อมูลใน textarea
+        if (randomOption4.includes('value="false"')) {
+            await page.waitForSelector('textarea[id="textarea_no_2_3"]');
+            await page.fill('textarea[id="textarea_no_2_3"]', 'อธิบาย'); // กรอกในช่อง "ไม่มี"
+        } else {
+            await page.waitForSelector('textarea[id="textarea_yes_2_3"]');
+            await page.fill('textarea[id="textarea_yes_2_3"]', 'อธิบาย'); // กรอกในช่อง "มี"
+        }
+
+        console.log('กรอกข้อมูลส่วนที่ 2 2.3 สำเร็จ!');
+
+        //ปัญหา/อุปสรรค และข้อเสนอแนะ
+        await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
+        await page.fill('textarea[name="data_Problems[1][problems_obstacles]"]', 'ปัญหาเเละอุปสรรค'); // ปัญหาเเละอุปสรรค
+
+        await page.waitForSelector('textarea[name="data_Problems[1][suggestions]"]');
+        await page.fill('textarea[name="data_Problems[1][suggestions]"]', 'ข้อเสนอแนะ'); // ข้อเสนอแนะ
+
+        console.log('กรอกข้อมูลปัญหา/อุปสรรคสำเร็จ!');
+
+        //ไฟล์ประกอบรายงาน
+        await page.waitForSelector('input[name="file"]'); 
+        await page.setInputFiles('input[name="file"]', 'D:\\งาน\\playwright\\test_file.jpg');  // ไฟล์
+
+        await page.waitForSelector('textarea[name="descriptionInput"]');
+        await page.fill('textarea[name="descriptionInput"]', 'คำอธิบาย'); // คำอธิบาย
+
+        console.log('อัปโหลดไฟล์ประกอบรายงานสำเร็จ!');
+
+        //ผู้รายงาน
+        await page.waitForSelector('input[name="first_name_reporter"]');
+        await page.fill('input[name="first_name_reporter"]', 'ผู้รายงาน1'); // ชื่อ
+
+        await page.waitForSelector('input[name="last_name_reporter"]');
+        await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
+
+        await page.waitForSelector('input[name="position_name_reporter"]');
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.10'); // ตำแหน่ง
+
+        console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
+
+        //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
+        await page.waitForSelector('input[name="examine"]'); 
+        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+
+        await page.waitForSelector('textarea[name="opinion"]');
+        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+
+        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+
+        console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 
         // 11️⃣ ค้างหน้าไว้ 10 วินาที
         await page.waitForTimeout(10000);
