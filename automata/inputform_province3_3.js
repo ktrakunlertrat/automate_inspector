@@ -65,46 +65,165 @@ const { chromium } = require('playwright');
         // คลิก Radio ที่สุ่มได้
         await page.check(randomOption);
 
-        // //ปัญหา/อุปสรรค และข้อเสนอแนะ
-        // await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
-        // await page.fill('textarea[name="data_Problems[1][problems_obstacles]"]', 'ปัญหาเเละอุปสรรค'); // ปัญหาเเละอุปสรรค
+        //ส่วนที่ 1 : การดำเนินงานด้านการป้องกันและแก้ไขปัญหาการค้ามนุษย์ของจังหวัด
+        await page.waitForSelector('input[name="status_plan"][value="false"]');
+        await page.waitForSelector('input[name="status_plan"][value="true"]');
 
-        // await page.waitForSelector('textarea[name="data_Problems[1][suggestions]"]');
-        // await page.fill('textarea[name="data_Problems[1][suggestions]"]', 'ข้อเสนอแนะ'); // ข้อเสนอแนะ
+        // สร้าง Array ของตัวเลือก
+        const options2 = [
+            'input[name="status_plan"][value="false"]',
+            'input[name="status_plan"][value="true"]'
+        ];
 
-        // console.log('กรอกข้อมูลปัญหา/อุปสรรคสำเร็จ!');
+        // สุ่มเลือก 1 ตัว
+        const randomOption2 = options2[Math.floor(Math.random() * options2.length)];
 
-        // //ไฟล์ประกอบรายงาน
-        // await page.waitForSelector('input[name="file"]'); 
-        // await page.setInputFiles('input[name="file"]', 'D:\\งาน\\playwright\\test_file.jpg');  // ไฟล์
+        // คลิก Radio ที่สุ่มได้
+        await page.check(randomOption2);
 
-        // await page.waitForSelector('textarea[name="descriptionInput"]');
-        // await page.fill('textarea[name="descriptionInput"]', 'คำอธิบาย'); // คำอธิบาย
+        if (randomOption2.includes('value="false"')) {
+            await page.waitForSelector('textarea[name="detail_false"]');
+            await page.fill('textarea[name="detail_false"]', 'ระบุคำชี้แจง ไม่เกิน 5 บรรทัด'); // กรอกในช่อง "ไม่มีแผน"
+        } else {
+            await page.waitForSelector('input[name="number"]');// กรอกในช่อง "มีแผน"
+            await page.fill('input[name="number"]', '1'); // จำนวนโครงการ
 
-        // console.log('อัปโหลดไฟล์ประกอบรายงานสำเร็จ!');
+            await page.waitForSelector('input[name="data_strategic[1][name]"]');// กรอกในช่อง "มีแผน"
+            await page.fill('input[name="data_strategic[1][name]"]', 'ชื่อโครงการ 1'); // ชื่อโครงการ
 
-        // //ผู้รายงาน
-        // await page.waitForSelector('input[name="first_name_reporter"]');
-        // await page.fill('input[name="first_name_reporter"]', 'ผู้รายงาน1'); // ชื่อ
+            await page.waitForSelector('input[name="data_strategic[1][number]"]');// กรอกในช่อง "มีแผน"
+            await page.fill('input[name="data_strategic[1][number]"]', 'ผลการดำเนินงาน 1'); // ผลการดำเนินงาน
+        }
 
-        // await page.waitForSelector('input[name="last_name_reporter"]');
-        // await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
+        //ส่วนที่ 2 : การขับเคลื่อนกลไกการส่งต่อระดับชาติ (NRM) ในระดับจังหวัด
+        await Promise.all([
+            page.waitForSelector('input[name="provincial_situation_new[1][number_of_times]"]'), //1) รับแจ้งเหตุ
+            page.waitForSelector('input[name="provincial_situation_new[2][number_of_times]"]'), //2) คัดกรอง
+            page.waitForSelector('input[name="provincial_situation_new[3][number_of_times]"]'), //3) คัดแยก (มีข้อบ่งชี้)
+        ]);
+        
+        await page.fill('input[name="provincial_situation_new[1][number_of_times]"]', '100');
+        await page.fill('input[name="provincial_situation_new[2][number_of_times]"]', '100');
+        await page.fill('input[name="provincial_situation_new[3][number_of_times]"]', '100');
 
-        // await page.waitForSelector('input[name="position_name_reporter"]');
-        // await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.10'); // ตำแหน่ง
+        const data = [
+            { index: 1, number: '2000' },
+            { index: 2, number: '2000' },
+            { index: 3, number: '2000' },
+            { index: 4, number: '2000' },
+            { index: 5, number: '2000' },
+            { index: 6, number: '2000' }
+        ];
 
-        // console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
+        for (let i = 0; i < data.length; i++) {
+            const { index, number } = data[i];
+            
+            await page.waitForSelector(`input[name="provincial_situation_new[${index}][number_of_people]"]`);
+            await page.fill(`input[name="provincial_situation_new[${index}][number_of_people]"]`, number); // จำนวนคน
 
-        // //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        // await page.waitForSelector('input[name="examine"]'); 
-        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+            await page.waitForSelector(`input[name="provincial_situation_new[${index}][number_tracking_of_mission_assistance]"]`);
+            await page.fill(`input[name="provincial_situation_new[${index}][number_tracking_of_mission_assistance]"]`, number); // การติดตามช่วยเหลือตามภารกิจของกระทรวง พม.
+        }
 
-        // await page.waitForSelector('textarea[name="opinion"]');
-        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        //กิจกรรมการดำเนินงาน
+        await Promise.all([
+            page.waitForSelector('input[name="invetion_NRM[1][check]"]'),
+            page.waitForSelector('input[name="invetion_NRM[2][check]"]'),
+            page.waitForSelector('input[name="invetion_NRM[3][check]"]'),
+            page.waitForSelector('input[name="invetion_NRM[4][check]"]'),
+            page.waitForSelector('input[name="invetion_NRM[5][check]"]'),
+        ]);
+        
+        await page.check('input[name="invetion_NRM[1][check]"]');
+        await page.check('input[name="invetion_NRM[2][check]"]');
+        await page.check('input[name="invetion_NRM[3][check]"]');
+        await page.check('input[name="invetion_NRM[4][check]"]');
+        await page.check('input[name="invetion_NRM[5][check]"]');
 
-        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        //การดำเนินงาน
+        for (let i = 1; i <= 5; i++) {
+            const trueSelector = `input[name="invetion_NRM[${i}][check_operation]"][value="true"]`;
+            const falseSelector = `input[name="invetion_NRM[${i}][check_operation]"][value="false"]`;
+            const numberInput = `input[name="invetion_NRM[${i}][number_operation]"]`;
+        
+            await page.waitForSelector(trueSelector);
+            await page.waitForSelector(falseSelector);
+        
+            const randomOption = Math.random() < 0.5 ? trueSelector : falseSelector;
+            await page.check(randomOption);
+        
+            if (randomOption === trueSelector) {
+                await page.waitForSelector(numberInput);
+                await page.fill(numberInput, '100');
+            }
+        }
 
-        // console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
+        //ส่วนที่ 3 : งบประมาณที่ได้รับจัดสรรเพื่อขับเคลื่อนการดำเนินงานตามกลไกการส่งต่อระดับชาติ (National Referral Mechanism : NRM) ในพื้นที่จังหวัด
+        await page.waitForSelector('input[name="budget"]');
+        await page.fill('input[name="budget"]', '20000');
+
+        await page.waitForSelector('input[name="budget_result"]');
+        await page.fill('input[name="budget_result"]', '20000');
+
+        //ส่วนที่ 4 : การสนับสนุนเงินกองทุนเพื่อการป้องกันและปราบปรามการค้ามนุษย์
+        await page.waitForSelector('input[name="number_request_fund_agency"]');
+        await page.fill('input[name="number_request_fund_agency"]', '200');
+
+        await page.waitForSelector('input[name="number_request_fund_project"]');
+        await page.fill('input[name="number_request_fund_project"]', '2000');
+
+        await page.waitForSelector('input[name="number_result_approve_project"]');
+        await page.fill('input[name="number_result_approve_project"]', '2000');
+
+        await page.waitForSelector('input[name="number_process_event_project"]');
+        await page.fill('input[name="number_process_event_project"]', '2000');
+
+        await page.waitForSelector('input[name="number_completed_project"]');
+        await page.fill('input[name="number_completed_project"]', '2000');
+
+        await page.waitForSelector('input[name="number_project"]');
+        await page.fill('input[name="number_project"]', '2000');
+
+        //ปัญหา/อุปสรรค และข้อเสนอแนะ
+        await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
+        await page.fill('textarea[name="data_Problems[1][problems_obstacles]"]', 'ปัญหาเเละอุปสรรค'); // ปัญหาเเละอุปสรรค
+
+        await page.waitForSelector('textarea[name="data_Problems[1][suggestions]"]');
+        await page.fill('textarea[name="data_Problems[1][suggestions]"]', 'ข้อเสนอแนะ'); // ข้อเสนอแนะ
+
+        console.log('กรอกข้อมูลปัญหา/อุปสรรคสำเร็จ!');
+
+        //ไฟล์ประกอบรายงาน
+        await page.waitForSelector('input[name="file"]'); 
+        await page.setInputFiles('input[name="file"]', 'D:\\งาน\\playwright\\test_file.jpg');  // ไฟล์
+
+        await page.waitForSelector('textarea[name="descriptionInput"]');
+        await page.fill('textarea[name="descriptionInput"]', 'คำอธิบาย'); // คำอธิบาย
+
+        console.log('อัปโหลดไฟล์ประกอบรายงานสำเร็จ!');
+
+        //ผู้รายงาน
+        await page.waitForSelector('input[name="first_name_reporter"]');
+        await page.fill('input[name="first_name_reporter"]', 'ผู้รายงาน1'); // ชื่อ
+
+        await page.waitForSelector('input[name="last_name_reporter"]');
+        await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
+
+        await page.waitForSelector('input[name="position_name_reporter"]');
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน3.3'); // ตำแหน่ง
+
+        console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
+
+        //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
+        await page.waitForSelector('input[name="examine"]'); 
+        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+
+        await page.waitForSelector('textarea[name="opinion"]');
+        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+
+        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+
+        console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 
         // 11️⃣ ค้างหน้าไว้ 10 วินาที
         await page.waitForTimeout(10000);
