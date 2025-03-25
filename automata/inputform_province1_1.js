@@ -176,7 +176,9 @@ const { chromium } = require('playwright');
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 
         // 11️⃣ ค้างหน้าไว้ 10 วินาที
-        await page.waitForTimeout(10000);
+        // await page.waitForTimeout(10000);
+
+        await page.waitForEvent('close');
 
     } catch (error) {
         console.error('เกิดข้อผิดพลาด:', error);
