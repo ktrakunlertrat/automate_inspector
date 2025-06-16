@@ -15,13 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        await page.fill('#user_id', 'cop-pna');
-        await page.fill('#password', '123456');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -31,19 +29,20 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "2.1 โครงการเงินอุดหนุนเพื่อการการเลี้ยงดูเด็กแรกเกิด"
-        await page.waitForSelector('//button[contains(., "2.1 โครงการเงินอุดหนุนเพื่อการการเลี้ยงดูเด็กแรกเกิด")]');
-        await page.click('//button[contains(., "2.1 โครงการเงินอุดหนุนเพื่อการการเลี้ยงดูเด็กแรกเกิด")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "1.1.1 โครงการเงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด")]');
+        await page.click('//button[contains(., "1.1.1 โครงการเงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report020101Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report020101Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report020101Controller?time_count=1&order=1.1.1&title=โครงการเงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report020101Controller?time_count=1&order=1.1.1&title=โครงการเงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
@@ -54,37 +53,31 @@ const { chromium } = require('playwright');
         await page.waitForSelector('select[name="end_mount"]'); // รอให้ select โหลด
         await page.selectOption('select[name="end_mount"]', { label: 'มิถุนายน' });
 
-        await page.waitForSelector('input[name="number_of_children_receiving_subsidy"]');
-        await page.fill('input[name="number_of_children_receiving_subsidy"]', '50000'); // จำนวนการติดตามทั้งหมด(เด็กอายุตั้งแต่ 6 ปีขึ้นไปที่เคยได้รับเงินอุดหนุนฯ)
-
-        await page.waitForSelector('input[name="number_of_following"]');
-        await page.fill('input[name="number_of_following"]', '30000'); // ค่าเป้าหมายการติดตามปี 2568ร้อยละ30.09(ราย)
-
         await page.waitForSelector('input[name="in_area"]');
-        await page.fill('input[name="in_area"]', '20000'); // ค่าเป้าหมายการติดตามปี 2568ร้อยละ30.09(ราย)
+        await page.fill('input[name="in_area"]', '2000'); // ค่าเป้าหมายการติดตามปี 2568ร้อยละ30.09(ราย)
 
         await page.waitForSelector('input[name="case_of_receiving"]');
-        await page.fill('input[name="case_of_receiving"]', '10000'); // กรณีได้รับการประสานส่งต่อจากนอกพื้นที่
+        await page.fill('input[name="case_of_receiving"]', '100'); // กรณีได้รับการประสานส่งต่อจากนอกพื้นที่
 
         await page.waitForSelector('input[name="save_in_MSOlogbook"]');
-        await page.fill('input[name="save_in_MSOlogbook"]', '20000'); // บันทึกใน MSO Logbook
+        await page.fill('input[name="save_in_MSOlogbook"]', '2000'); // บันทึกใน MSO Logbook
 
         await page.waitForSelector('input[name="child_followed_not_found"]');
-        await page.fill('input[name="child_followed_not_found"]', '5000'); // เด็กที่ติดตามแล้วแต่ไม่พบข้อมูลเด็กในพื้นที่และไม่สามารถติดตามที่อยู่ได้(ราย)
+        await page.fill('input[name="child_followed_not_found"]', '500'); // เด็กที่ติดตามแล้วแต่ไม่พบข้อมูลเด็กในพื้นที่และไม่สามารถติดตามที่อยู่ได้(ราย)
 
         await page.waitForSelector('input[name="child_followed_outside"]');
-        await page.fill('input[name="child_followed_outside"]', '4000'); // เด็กที่ติดตามแล้วแต่อยู่นอกพื้นที่จังหวัดและประสานส่งต่อแล้ว (ราย)
+        await page.fill('input[name="child_followed_outside"]', '40'); // เด็กที่ติดตามแล้วแต่อยู่นอกพื้นที่จังหวัดและประสานส่งต่อแล้ว (ราย)
 
         await page.waitForSelector('input[name="in_this_section"]');
-        await page.fill('input[name="in_this_section"]', '3000'); // อยู่ระหว่างการติดตาม (ราย)
+        await page.fill('input[name="in_this_section"]', '1000'); // อยู่ระหว่างการติดตาม (ราย)
 
         //ผลการดำเนินงานจำแนกรายมิติ
         const data = [
-            { index: 1, problem: '50000', rescued: '10000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 1' },
-            { index: 2, problem: '50000', rescued: '10000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 2' },
-            { index: 3, problem: '50000', rescued: '10000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 3' },
-            { index: 4, problem: '50000', rescued: '10000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 4' },
-            { index: 5, problem: '50000', rescued: '10000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 5' },
+            { index: 1, problem: '5000', rescued: '1000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 1' },
+            { index: 2, problem: '5000', rescued: '1000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 2' },
+            { index: 3, problem: '5000', rescued: '1000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 3' },
+            { index: 4, problem: '5000', rescued: '1000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 4' },
+            { index: 5, problem: '5000', rescued: '1000', detail: 'แผนการดำเนินงาน/แนวทางแก้ไขปัญหาในแต่ละมิติ(อธิบายแนวทาง/วิธีการ พอสังเขป) 5' },
         ];
 
         for (let i = 0; i < data.length; i++) {
@@ -187,18 +180,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.1'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน1.1.1'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

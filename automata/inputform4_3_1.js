@@ -15,17 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        // await page.fill('#user_id', 'cop-pna');
-        // await page.fill('#password', '123456');
-
-        //executive
-        await page.fill('#user_id', 'support001');
-        await page.fill('#password', '123456');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -34,49 +28,43 @@ const { chromium } = require('playwright');
         await page.waitForSelector('p.text-sm.ml-1.text-blue-600'); // รอให้ข้อความ "บ้านพักเด็กและครอบครัว" ปรากฏ
         console.log('Login สำเร็จ!');
 
-        await page.waitForSelector('[name="province"]');
-        await page.selectOption('[name="province"]', { label: 'พังงา' });
-
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('[name="org_id"]');
-        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "3.1 ร้อยละครัวเรือนเปราะบางในระบบสมุดพกครอบครัวอิเล็กทรอนิกส์"
-        await page.waitForSelector('//button[contains(., "3.1 ร้อยละครัวเรือนเปราะบางในระบบสมุดพกครอบครัวอิเล็กทรอนิกส์")]');
-        await page.click('//button[contains(., "3.1 ร้อยละครัวเรือนเปราะบางในระบบสมุดพกครอบครัวอิเล็กทรอนิกส์")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "4.3.1 ระบบสมุดพกครอบครัวอิเล็กทรอนิกส์ (MSO-Logbook)")]');
+        await page.click('//button[contains(., "4.3.1 ระบบสมุดพกครอบครัวอิเล็กทรอนิกส์ (MSO-Logbook)")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0301Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0301Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0301Controller?time_count=1&order=4.3.1&title=ระบบสมุดพกครอบครัวอิเล็กทรอนิกส์ (MSO-Logbook)"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0301Controller?time_count=1&order=4.3.1&title=ระบบสมุดพกครอบครัวอิเล็กทรอนิกส์ (MSO-Logbook)"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
-        //ส่วนที่ 1 : แผนและผลการดำเนินงาน
-        await page.waitForSelector('input[name="number_target"]');
-        await page.fill('input[name="number_target"]', '10000'); // เป้าหมาย
+        async function typeInput(page, selector, value) {
+            await page.waitForSelector(selector);
+            await page.click(selector, { clickCount: 3 });     // Select all
+            await page.press(selector, 'Backspace');           // Clear current value
+            await page.type(selector, value, { delay: 20 });   // Type slowly
+        }
 
-        await page.waitForSelector('input[name="vulnerable_households[0][number_operational_target]"]');
-        await page.fill('input[name="vulnerable_households[0][number_operational_target]"]', '10000'); // จำนวน(ครัวเรือน)
-
-        await page.waitForSelector('input[name="vulnerable_households[0][number_duplicate_family_target]"]');
-        await page.fill('input[name="vulnerable_households[0][number_duplicate_family_target]"]', '5000'); // ครัวเรือนเดิม
-
-        await page.waitForSelector('input[name="vulnerable_households[0][number_new_family_target]"]');
-        await page.fill('input[name="vulnerable_households[0][number_new_family_target]"]', '5000'); // ครัวเรือนใหม่
-        
+        //ส่วนที่ 1 : แผนและผลการดำเนินงาน        
         const data = [
-            { index: 1, number1: '2000', number2: '1000' },
-            { index: 2, number1: '2000', number2: '1000' },
-            { index: 3, number1: '2000', number2: '1000' },
-            { index: 4, number1: '2000', number2: '1000' },
-            { index: 5, number1: '2000', number2: '1000' },
+            { index: 1, number1: '100', number2: '50', detail: 'คำชี้แจง' },
+            { index: 2, number1: '100', number2: '50', detail: 'คำชี้แจง' },
+            { index: 3, number1: '100', number2: '50', detail: 'คำชี้แจง' },
+            { index: 4, number1: '100', number2: '50', detail: 'คำชี้แจง' },
+            { index: 5, number1: '100', number2: '50', detail: 'คำชี้แจง' },
+            { index: 6, number1: '100', number2: '50', detail: 'คำชี้แจง' },
         ];
 
         for (let i = 0; i < data.length; i++) {
-            const { index, number1, number2 } = data[i];
+            const { index, number1, number2, detail } = data[i];
             
             await page.waitForSelector(`input[name="vulnerable_households[${index}][number_operational_target]"]`);
             await page.fill(`input[name="vulnerable_households[${index}][number_operational_target]"]`, number1);
@@ -92,33 +80,15 @@ const { chromium } = require('playwright');
 
             await page.waitForSelector(`input[name="vulnerable_households[${index}][number_new_family_results]"]`);
             await page.fill(`input[name="vulnerable_households[${index}][number_new_family_results]"]`, number2);
+
+            await page.waitForSelector(`textarea[name="vulnerable_households[${index}][detail]"]`);
+            await page.fill(`textarea[name="vulnerable_households[${index}][detail]"]`, detail);
         }
 
-        //ส่วนที่ 2 : การให้การช่วยเหลือ ร้อยละ 60
-        await page.waitForSelector('input[name="give_help"]');
-        await page.fill('input[name="give_help"]', '2000');
+        //ส่วนที่ 2 : การให้ความช่วยเหลือ/พัฒนาคุณภาพชีวิตครัวเรือนเปราะบางเชิงคุณภาพ
+        await typeInput(page, 'input[name="number_target_family"]', '20');
 
-        await page.waitForSelector('input[name="coordinate"]');
-        await page.fill('input[name="coordinate"]', '2000');
-
-        await page.waitForSelector('input[name="give_advice"]');
-        await page.fill('input[name="give_advice"]', '2000');
-
-        //ส่วนที่ 3 : กรณี 20 จังหวัดที่ขอเพิ่มมิติรายได้
-        await page.waitForSelector('input[name="Target_group_households"]');
-        await page.fill('input[name="Target_group_households"]', '10000');
-
-        await page.waitForSelector('input[name="number_plans_single_member_household"]');
-        await page.fill('input[name="number_plans_single_member_household"]', '2000');
-
-        await page.waitForSelector('input[name="number_results_single_member_household"]');
-        await page.fill('input[name="number_results_single_member_household"]', '2000');
-
-        await page.waitForSelector('input[name="number_plans_multiple_member_house"]');
-        await page.fill('input[name="number_plans_multiple_member_house"]', '2000');
-
-        await page.waitForSelector('input[name="number_results_multiple_member_house"]');
-        await page.fill('input[name="number_results_multiple_member_house"]', '2000');
+        await typeInput(page, 'input[name="number_recommend"]', '40');
 
         //ปัญหา/อุปสรรค และข้อเสนอแนะ
         await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
@@ -146,18 +116,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน3.1'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน4.3.1'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

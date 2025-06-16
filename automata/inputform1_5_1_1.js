@@ -15,13 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        await page.fill('#user_id', 'cop-pna');
-        await page.fill('#password', '123456');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -31,19 +29,20 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "2.10 การพัฒนาด้านที่อยู่อาศัยสำหรับกลุ่มเป้าหมายกระทรวง พม."
-        await page.waitForSelector('//button[contains(., "2.10 การพัฒนาด้านที่อยู่อาศัยสำหรับกลุ่มเป้าหมายกระทรวง พม.")]');
-        await page.click('//button[contains(., "2.10 การพัฒนาด้านที่อยู่อาศัยสำหรับกลุ่มเป้าหมายกระทรวง พม.")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "1.5.1.1 แผนการขับเคลื่อนและคณะทำงานที่อยู่อาศัย*")]');
+        await page.click('//button[contains(., "1.5.1.1 แผนการขับเคลื่อนและคณะทำงานที่อยู่อาศัย*")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report02010Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report02010Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report02010Controller?time_count=1&order=1.5.1.1&title=แผนการขับเคลื่อนและคณะทำงานที่อยู่อาศัย*"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report02010Controller?time_count=1&order=1.5.1.1&title=แผนการขับเคลื่อนและคณะทำงานที่อยู่อาศัย*"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
@@ -80,21 +79,19 @@ const { chromium } = require('playwright');
         // คลิก Radio ที่สุ่มได้
         await page.check(randomOption2);
 
-        await page.waitForSelector('input[name="number_results_of_mso[0][number_targets_housing]"]');
-        await page.fill('input[name="number_results_of_mso[0][number_targets_housing]"]', '100000'); // จำนวน (ราย)
-
-        await page.waitForSelector('textarea[name="number_results_of_mso[4][detail]"]');
-        await page.fill('textarea[name="number_results_of_mso[4][detail]"]', 'บ้านพักเด็ก'); // บ้านอื่นๆ
+        await page.waitForSelector('textarea[name="number_results_of_mso[5][detail]"]');
+        await page.fill('textarea[name="number_results_of_mso[5][detail]"]', 'บ้านพักเด็ก'); // บ้านอื่นๆ
 
         const data = [
-            { index: 1, number: '20000', detail: 'คำชี้แจง 1' },
-            { index: 2, number: '20000', detail: 'คำชี้แจง 2' },
-            { index: 3, number: '20000', detail: 'คำชี้แจง 3' },
-            { index: 4, number: '20000', detail: 'คำชี้แจง 4' },
+            { index: 1, number: '20', budget: '200000', detail: 'คำชี้แจง 1' },
+            { index: 2, number: '20', budget: '200000', detail: 'คำชี้แจง 2' },
+            { index: 3, number: '20', budget: '200000', detail: 'คำชี้แจง 3' },
+            { index: 4, number: '20', budget: '200000', detail: 'คำชี้แจง 4' },
+            { index: 5, number: '20', budget: '200000', detail: 'คำชี้แจง 5' },
         ];
 
         for (let i = 0; i < data.length; i++) {
-            const { index, number, detail } = data[i];
+            const { index, number, budget, detail } = data[i];
             
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_housing_needs]"]`);
             await page.fill(`input[name="number_results_of_mso[${index}][number_housing_needs]"]`, number); // ความต้องการด้านที่อยู่อาศัย (ราย)
@@ -103,34 +100,21 @@ const { chromium } = require('playwright');
             await page.fill(`input[name="number_results_of_mso[${index}][number_targets_housing]"]`, number); // จำนวน (ราย) เป้าหมายการดำเนินงาน ปี 2568
 
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_targets_budget]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_budget]"]`, number); // เงินที่ได้รับการจัดสรร
+            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_budget]"]`, budget); // เงินที่ได้รับการจัดสรร เป้าหมายการดำเนินงาน ปี 2568
 
-            await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_targets_in_mso_logbook]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_targets_in_mso_logbook]"]`, number); // บันทึกลงในระบบ MSO-Logbook (ราย)
-
-            await page.waitForSelector(`textarea[name="number_results_of_mso[${index}][detail_targets]"]`);
-            await page.fill(`textarea[name="number_results_of_mso[${index}][detail_targets]"]`, detail); // คำชี้แจง
-        }
-
-        for (let i = 0; i < data.length; i++) {
-            const { index, number, detail } = data[i];
-            
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_housing]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_results_housing]"]`, number); // จำนวน (ราย) ผลการดำเนินงาน ปี 2568
+            await page.fill(`input[name="number_results_of_mso[${index}][number_results_housing]"]`, number); // จำนวน (หลัง) ผลการดำเนินงาน ปี 2568
 
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_disbursement]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_results_disbursement]"]`, number); // ผลการเบิกจ่าย (บาท)
-
-            await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_in_mso_logbook]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_results_in_mso_logbook]"]`, number); // กลุ่มเป้าหมายที่อยู่ระบบ MSO-Logbook (ราย)
+            await page.fill(`input[name="number_results_of_mso[${index}][number_results_disbursement]"]`, budget); // จำนวน (หลัง) ผลการดำเนินงาน ปี 2568
 
             await page.waitForSelector(`input[name="number_results_of_mso[${index}][number_results_budget]"]`);
-            await page.fill(`input[name="number_results_of_mso[${index}][number_results_budget]"]`, number); // การเบิกจ่าย (บาท)
+            await page.fill(`input[name="number_results_of_mso[${index}][number_results_budget]"]`, number); // บันทึกลงในระบบ MSO-Logbook (ราย)
 
             await page.waitForSelector(`textarea[name="number_results_of_mso[${index}][detail_explanation]"]`);
             await page.fill(`textarea[name="number_results_of_mso[${index}][detail_explanation]"]`, detail); // คำชี้แจง
         }
-
+        
         console.log('กรอกข้อมูลส่วนที่ 1 สำเร็จ!');
 
         //ส่วนที่ 2 : การบูรณาการการปรับสภาพที่อยู่อาศัย
@@ -162,23 +146,26 @@ const { chromium } = require('playwright');
 
         await page.check(randomOption3);
 
-        await page.waitForSelector('input[name="government[check]"]'); 
-        await page.check('input[name="government[check]"]'); // หน่วยงานรัฐ
+        // ตรวจสอบว่าเลือก value="true" แล้วค่อยทำรายการที่เกี่ยวข้อง
+        if (randomOption3 === 'input[name="housing_other[check_have]"][value="true"]') {
+            await page.waitForSelector('input[name="government[check]"]');
+            await page.check('input[name="government[check]"]'); // หน่วยงานรัฐ
 
-        await page.waitForSelector('textarea[name="government[detail]"]');
-        await page.fill('textarea[name="government[detail]"]', 'อธิบาย'); // หน่วยงานรัฐ อธิบาย
+            await page.waitForSelector('textarea[name="government[detail]"]');
+            await page.fill('textarea[name="government[detail]"]', 'อธิบาย'); // หน่วยงานรัฐ อธิบาย
 
-        await page.waitForSelector('input[name="private[check]"]'); 
-        await page.check('input[name="private[check]"]'); // หน่วยงานเอกชน
+            await page.waitForSelector('input[name="private[check]"]');
+            await page.check('input[name="private[check]"]'); // หน่วยงานเอกชน
 
-        await page.waitForSelector('textarea[name="private[detail]"]');
-        await page.fill('textarea[name="private[detail]"]', 'อธิบาย'); // หน่วยงานเอกชน อธิบาย
+            await page.waitForSelector('textarea[name="private[detail]"]');
+            await page.fill('textarea[name="private[detail]"]', 'อธิบาย'); // หน่วยงานเอกชน อธิบาย
 
-        await page.waitForSelector('input[name="other[check]"]'); 
-        await page.check('input[name="other[check]"]'); // อื่นๆ
+            await page.waitForSelector('input[name="other[check]"]');
+            await page.check('input[name="other[check]"]'); // อื่นๆ
 
-        await page.waitForSelector('textarea[name="other[detail]"]');
-        await page.fill('textarea[name="other[detail]"]', 'อธิบาย'); // อื่นๆ อธิบาย
+            await page.waitForSelector('textarea[name="other[detail]"]');
+            await page.fill('textarea[name="other[detail]"]', 'อธิบาย'); // อื่นๆ อธิบาย
+        }
 
         console.log('กรอกข้อมูลส่วนที่ 2 2.2 สำเร็จ!');
 
@@ -196,10 +183,7 @@ const { chromium } = require('playwright');
         await page.check(randomOption4);
 
         // เงื่อนไขสำหรับการกรอกข้อมูลใน textarea
-        if (randomOption4.includes('value="false"')) {
-            await page.waitForSelector('textarea[id="textarea_no_2_3"]');
-            await page.fill('textarea[id="textarea_no_2_3"]', 'อธิบาย'); // กรอกในช่อง "ไม่มี"
-        } else {
+        if (randomOption4 === 'input[name="radio"][value="true"]') {
             await page.waitForSelector('textarea[id="textarea_yes_2_3"]');
             await page.fill('textarea[id="textarea_yes_2_3"]', 'อธิบาย'); // กรอกในช่อง "มี"
         }
@@ -232,18 +216,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.10'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน1.5.1.1'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

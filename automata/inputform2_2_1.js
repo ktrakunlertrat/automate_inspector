@@ -15,17 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        // await page.fill('#user_id', 'cop-pna');
-        // await page.fill('#password', '123456');
-
-        //province cop ยะลา
-        await page.fill('#user_id', 'cop-yla');
-        await page.fill('#password', 'p@yala95Pmj');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -35,21 +29,30 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "2.6 โครงการคุ้มครองสวัสดิภาพกลุ่มเปราะบางพร้อมรับปรับตัวจากการเปลี่ยนแปลงสภาพภูมิอากาศและสถานการณ์ฉุกเฉิน"
-        await page.waitForSelector('//button[contains(., "2.6 โครงการคุ้มครองสวัสดิภาพกลุ่มเปราะบางพร้อมรับปรับตัวจากการเปลี่ยนแปลงสภาพภูมิอากาศและสถานการณ์ฉุกเฉิน")]');
-        await page.click('//button[contains(., "2.6 โครงการคุ้มครองสวัสดิภาพกลุ่มเปราะบางพร้อมรับปรับตัวจากการเปลี่ยนแปลงสภาพภูมิอากาศและสถานการณ์ฉุกเฉิน")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "2.2.1 ศูนย์บริหารการดูแลกลุ่มเปราะบางจากภัยพิบัติ (ศบปภ.)")]');
+        await page.click('//button[contains(., "2.2.1 ศูนย์บริหารการดูแลกลุ่มเปราะบางจากภัยพิบัติ (ศบปภ.)")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0206Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0206Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0206Controller?time_count=1&order=2.2.1&title=ศูนย์บริหารการดูแลกลุ่มเปราะบางจากภัยพิบัติ (ศบปภ.)"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0206Controller?time_count=1&order=2.2.1&title=ศูนย์บริหารการดูแลกลุ่มเปราะบางจากภัยพิบัติ (ศบปภ.)"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
+
+        // ฟังก์ชันใช้กรอกข้อมูลใน input ที่มี AutoNumeric
+        async function typeInput(page, selector, value) {
+            await page.waitForSelector(selector);
+            await page.click(selector, { clickCount: 3 });     // Select all
+            await page.press(selector, 'Backspace');           // Clear current value
+            await page.type(selector, value, { delay: 20 });   // Type slowly
+        }
 
         //ส่วนที่ 1 : งบประมาณ
         await page.waitForSelector('input[name="number_budget"]');
@@ -60,8 +63,8 @@ const { chromium } = require('playwright');
 
         //ส่วนที่ 2 : เครือข่ายอาสาเพื่อเตือนภัยในชุมชน (ครู ก.)
         //1)
-        await page.waitForSelector('input[id="checkbox_2_1"]');
-        await page.check('input[id="checkbox_2_1"]');
+        await page.waitForSelector('input[name="data_community_alert_network[number_target]"]');
+        await page.fill('input[name="data_community_alert_network[number_target]"]', '100');
 
         //2)
         for (let i = 1; i <= 3; i++) {
@@ -132,38 +135,25 @@ const { chromium } = require('playwright');
 
         //ส่วนที่ 4 : การดำเนินงานของจังหวัดในการเตรียมความพร้อมปรับตัวจากการเปลี่ยนแปลงสภาพภูมิอากาศและสถานการณืฉุกเฉิน
         for (let i = 0; i <= 1; i++) {
-            await page.waitForSelector(`input[name="data_provincial_climate_and_emergency_readiness[${i}][name]"]`);
-            await page.fill(`input[name="data_provincial_climate_and_emergency_readiness[${i}][name]"]`, 'การดำเนินงาน');
+            await page.waitForSelector(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][name]"]`);
+            await page.fill(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][name]"]`, 'การดำเนินงาน');
         
-            await page.waitForSelector(`input[name="data_provincial_climate_and_emergency_readiness[${i}][detail_in_process]"]`);
-            await page.fill(`input[name="data_provincial_climate_and_emergency_readiness[${i}][detail_in_process]"]`, 'อธิบายกระบวนการดำเนินงาน');
-        
-            for (let j = 0; j <= 2; j++) {
-                const checkSelector = `input[name="data_provincial_climate_and_emergency_readiness[${i}][data_target_provincial_climate_and_emergency_readiness][${j}][check]"]`;
-                const detailSelector = `input[name="data_provincial_climate_and_emergency_readiness[${i}][data_target_provincial_climate_and_emergency_readiness][${j}][detail]"]`;
-        
-                if (j !== 1) {
-                    await page.waitForSelector(checkSelector);
-                    await page.check(checkSelector);
-                }
-        
-                if (j >= 1) {
-                    await page.waitForSelector(detailSelector);
-                    await page.fill(detailSelector, 'กลุ่มเป้าหมาย');
-                }
-            }
+            await page.waitForSelector(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][detail_in_process]"]`);
+            await page.fill(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][detail_in_process]"]`, 'อธิบายกระบวนการดำเนินงาน');
+
+            await page.waitForSelector(`input[name="data_provincial_climate_and_emergency_readiness[${i}][data_target_provincial_climate_and_emergency_readiness][0][check]"]`);
+            await page.check(`input[name="data_provincial_climate_and_emergency_readiness[${i}][data_target_provincial_climate_and_emergency_readiness][0][check]"]`);
         
             await page.waitForSelector(`input[name="data_provincial_climate_and_emergency_readiness[${i}][processing_time]"]`);
             await page.fill(`input[name="data_provincial_climate_and_emergency_readiness[${i}][processing_time]"]`, 'ระยะเวลาดำเนินการ');
         
-            await page.waitForSelector(`input[name="data_provincial_climate_and_emergency_readiness[${i}][source_of_budget]"]`);
-            await page.fill(`input[name="data_provincial_climate_and_emergency_readiness[${i}][source_of_budget]"]`, 'ที่มาของงบประมาณ');
+            await page.waitForSelector(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][source_of_budget]"]`);
+            await page.fill(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][source_of_budget]"]`, 'ที่มาของงบประมาณ');
+
+            await typeInput(page, `input[name="data_provincial_climate_and_emergency_readiness[${i}][number_budget]"]`, '20000');
         
-            await page.waitForSelector(`input[name="data_provincial_climate_and_emergency_readiness[${i}][number_budget]"]`);
-            await page.fill(`input[name="data_provincial_climate_and_emergency_readiness[${i}][number_budget]"]`, '20000');
-        
-            await page.waitForSelector(`input[name="data_provincial_climate_and_emergency_readiness[${i}][detail]"]`);
-            await page.fill(`input[name="data_provincial_climate_and_emergency_readiness[${i}][detail]"]`, 'หมายเหตุ');
+            await page.waitForSelector(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][detail]"]`);
+            await page.fill(`textarea[name="data_provincial_climate_and_emergency_readiness[${i}][detail]"]`, 'หมายเหตุ');
         }        
 
         //ปัญหา/อุปสรรค และข้อเสนอแนะ
@@ -192,18 +182,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.6'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.2.1'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

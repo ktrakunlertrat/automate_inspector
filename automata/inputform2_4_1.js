@@ -15,17 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        // await page.fill('#user_id', 'cop-pna');
-        // await page.fill('#password', '123456');
-
-        //province cop ยะลา
-        await page.fill('#user_id', 'cop-yla');
-        await page.fill('#password', 'p@yala95Pmj');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -35,28 +29,32 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "3.5 จำนวนกิจกรรมการขับเคลื่อนงานเพื่อพัฒsนาหุ้นส่วนทางสังคมในการจัดสวัสดิการสังคม"
-        await page.waitForSelector('//button[contains(., "3.5 จำนวนกิจกรรมการขับเคลื่อนงานเพื่อพัฒsนาหุ้นส่วนทางสังคมในการจัดสวัสดิการสังคม")]');
-        await page.click('//button[contains(., "3.5 จำนวนกิจกรรมการขับเคลื่อนงานเพื่อพัฒsนาหุ้นส่วนทางสังคมในการจัดสวัสดิการสังคม")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "2.4.1 กิจกรรมการขับเคลื่อนงานเพื่อพัฒนาหุ้นส่วนทางสังคมในการจัดสวัสดิการสังคม")]');
+        await page.click('//button[contains(., "2.4.1 กิจกรรมการขับเคลื่อนงานเพื่อพัฒนาหุ้นส่วนทางสังคมในการจัดสวัสดิการสังคม")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0305Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0305Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0305Controller?time_count=1&order=2.4.1&title=กิจกรรมการขับเคลื่อนงานเพื่อพัฒนาหุ้นส่วนทางสังคมในการจัดสวัสดิการสังคม"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0305Controller?time_count=1&order=2.4.1&title=กิจกรรมการขับเคลื่อนงานเพื่อพัฒนาหุ้นส่วนทางสังคมในการจัดสวัสดิการสังคม"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
-        //ส่วนที่ 1 : งบประมาณ
-        await page.waitForSelector('input[name="number_budget"]')
-        await page.fill('input[name="number_budget"]', '1000')
+        async function typeInput(page, selector, value) {
+            await page.waitForSelector(selector);
+            await page.click(selector, { clickCount: 3 });     // Select all
+            await page.press(selector, 'Backspace');           // Clear current value
+            await page.type(selector, value, { delay: 20 });   // Type slowly
+        }
 
-        await page.waitForSelector('input[name="number_result_budget"]')
-        await page.fill('input[name="number_result_budget"]', '1000')
+        //ส่วนที่ 1 : งบประมาณ
+        await typeInput(page, 'input[name="number_result_budget"]', '40000');
 
         //ส่วนที่ 2 : ผลการดำเนินงาน
         await page.waitForSelector('input[name="mountsix[2][check]"]')
@@ -81,7 +79,7 @@ const { chromium } = require('playwright');
         await page.fill('textarea[name="sixMount[1][help_process]"]', 'test')
 
         // คลิกที่ <summary> เพื่อเปิด dropdown
-        await page.click('summary:has-text("กรุณากดเลือกมิติ (SDG)")');
+        await page.click('summary:has-text("กรุณาเลือก SDGs")');
         await page.check('input[name="sixMount[1][in_line_with_SDGs][1][in_line_with_SDGs_check]"]');
 
         await page.waitForSelector('textarea[name="sixMount[1][csr_integration_with_team]"]')
@@ -91,7 +89,6 @@ const { chromium } = require('playwright');
         await page.setInputFiles('input[id="file_six_1"]', 'D:\\งาน\\playwright\\test_file.jpg');
 
         //รอบ 12 เดือน
-
 
         //ปัญหา/อุปสรรค และข้อเสนอแนะ
         await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
@@ -119,18 +116,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน3.5'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.4.1'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

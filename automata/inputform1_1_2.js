@@ -15,17 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        // await page.fill('#user_id', 'cop-pna');
-        // await page.fill('#password', '123456');
-
-        //province cop ยะลา
-        await page.fill('#user_id', 'cop-yla');
-        await page.fill('#password', 'p@yala95Pmj');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -35,21 +29,29 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "2.5 โครงการพัฒนาและเสริมสร้างความเข้มแข็งของสถาบันครอบครัวและชุมชน"
-        await page.waitForSelector('//button[contains(., "2.5 โครงการพัฒนาและเสริมสร้างความเข้มแข็งของสถาบันครอบครัวและชุมชน")]');
-        await page.click('//button[contains(., "2.5 โครงการพัฒนาและเสริมสร้างความเข้มแข็งของสถาบันครอบครัวและชุมชน")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "1.1.2 โครงการพัฒนาและเสริมสร้างความเข้มแข็งของสถาบันครอบครัวและชุมชน")]');
+        await page.click('//button[contains(., "1.1.2 โครงการพัฒนาและเสริมสร้างความเข้มแข็งของสถาบันครอบครัวและชุมชน")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0205Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0205Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0205Controller?time_count=1&order=1.1.2&title=โครงการพัฒนาและเสริมสร้างความเข้มแข็งของสถาบันครอบครัวและชุมชน"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0205Controller?time_count=1&order=1.1.2&title=โครงการพัฒนาและเสริมสร้างความเข้มแข็งของสถาบันครอบครัวและชุมชน"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
+
+        async function typeInput(page, selector, value) {
+            await page.waitForSelector(selector);
+            await page.click(selector, { clickCount: 3 });     // Select all
+            await page.press(selector, 'Backspace');           // Clear current value
+            await page.type(selector, value, { delay: 20 });   // Type slowly
+        }
 
         //ส่วนที่ 1 : งบประมาณ
         const data = [
@@ -61,81 +63,54 @@ const { chromium } = require('playwright');
 
         for (let i = 0; i < data.length; i++) {
             const { index, allocated, disbursement } = data[i];
-            
-            await page.waitForSelector(`input[name="data_budget_of_family_and_community_project[${index}][number_budget]"]`);
-            await page.fill(`input[name="data_budget_of_family_and_community_project[${index}][number_budget]"]`, allocated); // กรอกจำนวนงบที่จัดสรร
 
-            await page.waitForSelector(`input[name="data_budget_of_family_and_community_project[${index}][number_results_budget]"]`);
-            await page.fill(`input[name="data_budget_of_family_and_community_project[${index}][number_results_budget]"]`, disbursement); // กรอกจำนวนงบที่เบิกจ่าย
+            await typeInput(page, `input[name="data_budget_of_family_and_community_project[${index}][number_budget]"]`, allocated);
+
+            await typeInput(page, `input[name="data_budget_of_family_and_community_project[${index}][number_results_budget]"]`, disbursement);
         }
 
         //ส่วนที่ 2 : ผลการดำเนินงาน
         //2.1
         const data1 = [
-            { index: 0, number1: '20000', number2: '2000', detail: 'test' },
-            { index: 1, number1: '20000', number2: '2000', detail: 'test' }
+            { index: 0, budget1: '20000', fund1: '5', fund2: '4',  budget2: '10000', fund3: '1', detail: 'test'},
+            { index: 1, budget1: '20000', fund1: '5', fund2: '4',  budget2: '10000', fund3: '1', detail: 'test'}
         ];
 
         for (let i = 0; i < data1.length; i++) {
-            const { index, number1, number2, detail } = data1[i];
+            const { index, budget1, fund1, fund2, budget2, fund3, detail } = data1[i];
+
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][numberTotal]"]`, budget1); //วงเงินที่จังหวัดได้รับจัดสรร
             
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][numberTotal]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][numberTotal]"]`, number1);
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][number_project_request_budget]"]`, fund1); //จำนวนโครงการที่ขอรับสนับสนุนงบประมาณ
 
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][number_project_request_budget]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][number_project_request_budget]"]`, number2);
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][number_project_results_budget]"]`, fund2); //จำนวนโครงการที่ได้รับสนับสนุน
 
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][number_project_results_budget]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][number_project_results_budget]"]`, number2);
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][number_results_budget]"]`, budget2); //งบประมาณที่สนับสนุนให้ศพค./เครือข่ายด้านครอบครัว
 
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][number_results_budget]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][number_results_budget]"]`, number2);
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][number_project_completed]"]`, fund3); //จำนวนโครงการที่ดำเนินการเสร็จแล้ว
 
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][number_project_completed]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][number_project_completed]"]`, number2);
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][number_project_in_progress]"]`, fund3); //จำนวนโครงการที่อยู่ระหว่างดำเนินการ
 
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][number_project_in_progress]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][number_project_in_progress]"]`, number2);
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][number_project_not_progress]"]`, fund3); //จำนวนโครงการที่ยังไม่ดำเนินการ
 
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][number_project_not_progress]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][number_project_not_progress]"]`, number2);
+            await typeInput(page, `textarea[name="data_family_development_subsidies[${index}][detail_not_progress]"]`, detail); //ระบุเหตุผลกรณียังไม่ดำเนินการ
 
-            await page.waitForSelector(`textarea[name="data_family_development_subsidies[${index}][detail_not_progress]"]`);
-            await page.fill(`textarea[name="data_family_development_subsidies[${index}][detail_not_progress]"]`, detail);
+            await typeInput(page, `input[name="data_family_development_subsidies[${index}][number_project_not_supported]"]`, fund3); //จำนวนโครงการที่ไม่ได้รับสนับสนุน
 
-            await page.waitForSelector(`input[name="data_family_development_subsidies[${index}][number_project_not_supported]"]`);
-            await page.fill(`input[name="data_family_development_subsidies[${index}][number_project_not_supported]"]`, number2);
-
-            await page.waitForSelector(`textarea[name="data_family_development_subsidies[${index}][detail_not_supported]"]`);
-            await page.fill(`textarea[name="data_family_development_subsidies[${index}][detail_not_supported]"]`, detail);
+            await typeInput(page, `textarea[name="data_family_development_subsidies[${index}][detail_not_supported]"]`, detail); //ระบุเหตุผลกรณีโครงการที่ไม่ได้รับสนับสนุน
         }
 
-        const data2 = [
-            { index: 0, number1: '2000' },
-            { index: 1, number1: '2000' },
-            { index: 2, number1: '2000' }
-        ];
-
-        for (let i = 0; i < data2.length; i++) {
-            const { index, number1 } = data2[i];
-            
-            await page.waitForSelector(`input[name="data_subsidized_organization_types[${index}][number]"]`);
-            await page.fill(`input[name="data_subsidized_organization_types[${index}][number]"]`, number1);
+        //จำนวนเครือข่ายด้านครอบครัวที่ได้รับการสนับสนุนเงินอุดหนุน
+        for (let i = 0; i <= 2; i++) {
+            await page.waitForSelector(`input[name="data_subsidized_organization_types[${i}][number]"]`);
+            await page.fill(`input[name="data_subsidized_organization_types[${i}][number]"]`, '2');
         }
 
-        await page.waitForSelector('textarea[id="detail_of_request_for_subsidy"]');
-        await page.fill('textarea[id="detail_of_request_for_subsidy"]', 'test');
-
-        await page.waitForSelector('input[name="data_projects_budget_supported[0][number_project]"]');
-        await page.fill('input[name="data_projects_budget_supported[0][number_project]"]', '1000');
-
-        await page.waitForSelector('input[name="data_projects_budget_supported[0][number_budget]"]');
-        await page.fill('input[name="data_projects_budget_supported[0][number_budget]"]', '10000');
-
-        for (let i = 0; i <= 9; i++) {
-            await page.waitForSelector(`input[name="data_projects_budget_supported_detail[${i}][number]"]`);
-            await page.fill(`input[name="data_projects_budget_supported_detail[${i}][number]"]`, '100');
-        }
+        //โครงการที่ได้รับสนับสนุนงบประมาณ
+        // for (let i = 0; i <= 9; i++) {
+        //     await page.waitForSelector(`input[name="data_projects_budget_supported_detail[${i}][number]"]`);
+        //     await page.fill(`input[name="data_projects_budget_supported_detail[${i}][number]"]`, '1');
+        // }
 
         //2.2 สร้างพื้นที่สร้างสรรค์สำหรับครอบครัวทุกช่วงวัยในชุมชน
         //2.2.1
@@ -216,21 +191,9 @@ const { chromium } = require('playwright');
         await page.fill('textarea[name="data_family_strength_survey[detail]"]', 'ชี้แจงกรณีไม่เป็นตามเป้าหมาย');
 
         //ส่วนที่ 4 : สถานการณ์ความเข้มแข็งของครอบครัวจากการสำรวจตามมาตรฐานครอบครัวเข้มแข็งประจำปีงบประมาณ พ.ศ. 2567
-        const usedValues = new Set(); // เก็บค่าที่สุ่มแล้ว
-
-        for (let i = 0; i <= 6; i++) {
-            // รอให้ select element ปรากฏ
-            await page.waitForSelector(`select[name="data_ranking_family_strength[${i}][family_strength_id]"]`);
-
-            let randomValue;
-            do {
-                randomValue = Math.floor(Math.random() * 7) + 1; // สุ่มค่า 1-7
-            } while (usedValues.has(randomValue)); // ถ้าค่าซ้ำ ให้สุ่มใหม่
-
-            usedValues.add(randomValue); // เพิ่มค่าที่ใช้แล้วลง Set
-
-            // เลือกค่าแบบสุ่ม
-            await page.selectOption(`select[name="data_ranking_family_strength[${i}][family_strength_id]"]`, randomValue.toString());
+        for (let i = 1; i <= 7; i++) {
+            await page.waitForSelector(`input[name="data_ranking_family_strength[${i}][rank]"]`);
+            await page.fill(`input[name="data_ranking_family_strength[${i}][rank]"]`, '500');
         }
 
         //ปัญหา/อุปสรรค และข้อเสนอแนะ
@@ -259,18 +222,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.5'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน1.1.2'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

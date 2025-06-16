@@ -15,17 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        // await page.fill('#user_id', 'cop-pna');
-        // await page.fill('#password', '123456');
-
-        //province cop ยะลา
-        await page.fill('#user_id', 'cop-yla');
-        await page.fill('#password', 'p@yala95Pmj');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -35,19 +29,20 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู " 4.โครงการเพิ่มทักษะด้านอาชีพแก่นักเรียนที่ไม่ได้เรียนต่อหลัง"
-        await page.waitForSelector('//button[contains(., " 4.โครงการเพิ่มทักษะด้านอาชีพแก่นักเรียนที่ไม่ได้เรียนต่อหลัง")]');
-        await page.click('//button[contains(., " 4.โครงการเพิ่มทักษะด้านอาชีพแก่นักเรียนที่ไม่ได้เรียนต่อหลัง")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "6. โครงการเพิ่มทักษะด้านอาชีพแก่นักเรียนที่ไม่ได้เรียนต่อหลังจบการศึกษาภาคบังคับในปีงบประมาณ พ.ศ. 2568")]');
+        await page.click('//button[contains(., "6. โครงการเพิ่มทักษะด้านอาชีพแก่นักเรียนที่ไม่ได้เรียนต่อหลังจบการศึกษาภาคบังคับในปีงบประมาณ พ.ศ. 2568")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report04Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report04Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report04Controller?time_count=1&order=6&title=โครงการเพิ่มทักษะด้านอาชีพแก่นักเรียนที่ไม่ได้เรียนต่อหลังจบการศึกษาภาคบังคับในปีงบประมาณ พ.ศ. 2568"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report04Controller?time_count=1&order=6&title=โครงการเพิ่มทักษะด้านอาชีพแก่นักเรียนที่ไม่ได้เรียนต่อหลังจบการศึกษาภาคบังคับในปีงบประมาณ พ.ศ. 2568"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
@@ -175,13 +170,13 @@ const { chromium } = require('playwright');
             await page.waitForSelector(`input[name="file${i}_2"]`); 
             await page.setInputFiles(`input[name="file${i}_2"]`, 'D:\\งาน\\playwright\\test_file.jpg');
         
-            // ไม่มีการดำเนินการ
-            await page.waitForSelector(`input[name="list[${i}][check_no_action_taken]"]`);
-            await page.check(`input[name="list[${i}][check_no_action_taken]"]`);
+            // // ไม่มีการดำเนินการ
+            // await page.waitForSelector(`input[name="list[${i}][check_no_action_taken]"]`);
+            // await page.check(`input[name="list[${i}][check_no_action_taken]"]`);
         
-            // คำชี้แจง
-            await page.waitForSelector(`textarea[name="list[${i}][detail]"]`);
-            await page.fill(`textarea[name="list[${i}][detail]"]`, `คำชี้แจง ${i}`);
+            // // คำชี้แจง
+            // await page.waitForSelector(`textarea[name="list[${i}][detail]"]`);
+            // await page.fill(`textarea[name="list[${i}][detail]"]`, `คำชี้แจง ${i}`);
         }
  
         //ปัญหา/อุปสรรค และข้อเสนอแนะ
@@ -210,18 +205,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน4'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน6'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

@@ -15,17 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        // await page.fill('#user_id', 'cop-pna');
-        // await page.fill('#password', '123456');
-
-        //province cop ยะลา
-        await page.fill('#user_id', 'cop-yla');
-        await page.fill('#password', 'p@yala95Pmj');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -35,19 +29,20 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "2.4 โครงการส่งเสริมบทบาทอาสาสมัครพัฒนาสังคมและความมั่นคงของมนุษย์ (อพม.) ระดับจังหวัด"
-        await page.waitForSelector('//button[contains(., "2.4 โครงการส่งเสริมบทบาทอาสาสมัครพัฒนาสังคมและความมั่นคงของมนุษย์ (อพม.) ระดับจังหวัด")]');
-        await page.click('//button[contains(., "2.4 โครงการส่งเสริมบทบาทอาสาสมัครพัฒนาสังคมและความมั่นคงของมนุษย์ (อพม.) ระดับจังหวัด")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., " 3.2.1 โครงการส่งเสริมบทบาทอาสาสมัครพัฒนาสังคมและความมั่นคงของมนุษย์ (อพม.) ระดับจังหวัด")]');
+        await page.click('//button[contains(., " 3.2.1 โครงการส่งเสริมบทบาทอาสาสมัครพัฒนาสังคมและความมั่นคงของมนุษย์ (อพม.) ระดับจังหวัด")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0204Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0204Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0204Controller?time_count=1&order=3.2.1&title=โครงการส่งเสริมบทบาทอาสาสมัครพัฒนาสังคมและความมั่นคงของมนุษย์ (อพม.) ระดับจังหวัด"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0204Controller?time_count=1&order=3.2.1&title=โครงการส่งเสริมบทบาทอาสาสมัครพัฒนาสังคมและความมั่นคงของมนุษย์ (อพม.) ระดับจังหวัด"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
 
@@ -81,15 +76,22 @@ const { chromium } = require('playwright');
         await page.fill('textarea[name="data_generation_sdhsv_capacity_building_activities[0][detail]"]', 'อธิบายรายละเอียด');
 
         //ส่วนที่ 2 : ผลการดำเนินงานโครงการ
-        await page.waitForSelector('input[name="data_main_budget_of_project_sdhsv_new[0][number_budget]"]');
-        await page.fill('input[name="data_main_budget_of_project_sdhsv_new[0][number_budget]"]', '100000'); // ที่ได้รับจัดสรร ภาพรวม (บาท)
+        // ฟังก์ชันใช้กรอกข้อมูลใน input ที่มี AutoNumeric
+        async function typeInput(page, selector, value) {
+            await page.waitForSelector(selector);
+            await page.click(selector, { clickCount: 3 });     // Select all
+            await page.press(selector, 'Backspace');           // Clear current value
+            await page.type(selector, value, { delay: 20 });   // Type slowly
+        }
 
         for (let i = 0; i <= 3; i++) {
-            await page.waitForSelector(`input[name="data_budget_of_project_sdhsv_new[${i}][number_budget_results]"]`);
-            await page.fill(`input[name="data_budget_of_project_sdhsv_new[${i}][number_budget_results]"]`, '25000'); // ผลการเบิกจ่าย (บาท)
+            if (i === 3) {
+                await typeInput(page, 'input[name="data_budget_of_project_sdhsv_new[3][number_sdhsv]"]', '100');
 
-            await page.waitForSelector(`input[name="data_budget_of_project_sdhsv_new[${i}][number_sdhsv]"]`);
-            await page.fill(`input[name="data_budget_of_project_sdhsv_new[${i}][number_sdhsv]"]`, '1000'); // จำนวนอพม.(คน)
+                await typeInput(page, 'input[name="data_budget_of_project_sdhsv_new[3][number_budget_results]"]', '25000');
+            } else {
+                await typeInput(page, `input[name="data_budget_of_project_sdhsv_new[${i}][number_budget_results]"]`, '25000');
+            }
         }
 
         //ส่วนที่ 3 : ผลการเบิกจ่ายงบประมาณโครงการฯ
@@ -136,18 +138,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.4'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน3.2.1'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 

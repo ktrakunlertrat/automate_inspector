@@ -15,13 +15,11 @@ const { chromium } = require('playwright');
         await page.waitForSelector('#password');
 
         // 3️⃣ กรอก Username และ Password
-        //province user พังงา
-        // await page.fill('#user_id', 'user383'); // กรอก User
-        // await page.fill('#password', '412179'); // กรอก Password
+        await page.fill('#user_id', 'cop-pre');
+        await page.fill('#password', '1234567');
 
-        //province cop พังงา
-        await page.fill('#user_id', 'cop-pna');
-        await page.fill('#password', '123456');
+        // await page.fill('#user_id', 'admin');
+        // await page.fill('#password', 'adminnarong');
 
         // 4️⃣ คลิกปุ่ม Login
         await page.click('button[type="submit"]');
@@ -31,21 +29,29 @@ const { chromium } = require('playwright');
         console.log('Login สำเร็จ!');
 
         // 6️⃣ เลือกหน่วยงาน "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
-        await page.waitForSelector('#province-select');
-        await page.selectOption('#province-select', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' }); // เลือก "สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์"
+        // await page.selectOption('[name="province"]', { label: 'แพร่' });
+
+        await page.selectOption('[name="org_id"]', { label: 'สำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์' });
 
         // 7️⃣ รอให้หน้าโหลดหลังการเลือกหน่วยงาน
         await page.waitForNavigation(); // รอการโหลดหน้าใหม่หลังจากที่ฟอร์มถูกส่ง
 
-        // 8️⃣ คลิกเมนู "3.3 ระดับความสำเร็จในการขับเคลื่อนกลไกการส่งต่อระดับชาติระดับจังหวัด (National Referral Mechanism : NRM)"
-        await page.waitForSelector('//button[contains(., "3.3 ระดับความสำเร็จในการขับเคลื่อนกลไกการส่งต่อระดับชาติระดับจังหวัด (National Referral Mechanism : NRM)")]');
-        await page.click('//button[contains(., "3.3 ระดับความสำเร็จในการขับเคลื่อนกลไกการส่งต่อระดับชาติระดับจังหวัด (National Referral Mechanism : NRM)")]');
+        // 8️⃣ คลิกเมนู
+        await page.waitForSelector('//button[contains(., "2.1.1 กลไกการส่งต่อระดับชาติระดับจังหวัด (National Referral Mechanism : NRM)")]');
+        await page.click('//button[contains(., "2.1.1 กลไกการส่งต่อระดับชาติระดับจังหวัด (National Referral Mechanism : NRM)")]');
 
         // 9️⃣ รอให้เมนูย่อยแสดง แล้วคลิก "บันทึกข้อมูลครั้งที่ 1"
-        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0303Controller?time_count=1"]'); // รอให้ลิงก์โหลด
-        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0303Controller?time_count=1"]'); // คลิกลิงก์
+        await page.waitForSelector('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0303Controller?time_count=1&order=2.1.1&title=กลไกการส่งต่อระดับชาติระดับจังหวัด (National Referral Mechanism : NRM)"]'); // รอให้ลิงก์โหลด
+        await page.click('a[href="https://volunteer-smart-beta.nu.ac.th/beta-inspectorNew/index.php/Y2568Report0303Controller?time_count=1&order=2.1.1&title=กลไกการส่งต่อระดับชาติระดับจังหวัด (National Referral Mechanism : NRM)"]'); // คลิกลิงก์
 
         console.log('คลิกบันทึกข้อมูลครั้งที่ 1 สำเร็จ!');
+
+        async function typeInput(page, selector, value) {
+            await page.waitForSelector(selector);
+            await page.click(selector, { clickCount: 3 });     // Select all
+            await page.press(selector, 'Backspace');           // Clear current value
+            await page.type(selector, value, { delay: 20 });   // Type slowly
+        }
 
         //จังหวัดของท่านอยู่ในกลุ่มเฝ้าระวังใด
         await page.waitForSelector('input[name="surveillance_group_id"][value="1 "]');
@@ -102,17 +108,17 @@ const { chromium } = require('playwright');
             page.waitForSelector('input[name="provincial_situation_new[3][number_of_times]"]'), //3) คัดแยก (มีข้อบ่งชี้)
         ]);
         
-        await page.fill('input[name="provincial_situation_new[1][number_of_times]"]', '100');
-        await page.fill('input[name="provincial_situation_new[2][number_of_times]"]', '100');
-        await page.fill('input[name="provincial_situation_new[3][number_of_times]"]', '100');
+        await page.fill('input[name="provincial_situation_new[1][number_of_times]"]', '10');
+        await page.fill('input[name="provincial_situation_new[2][number_of_times]"]', '10');
+        await page.fill('input[name="provincial_situation_new[3][number_of_times]"]', '10');
 
         const data = [
-            { index: 1, number: '2000' },
-            { index: 2, number: '2000' },
-            { index: 3, number: '2000' },
-            { index: 4, number: '2000' },
-            { index: 5, number: '2000' },
-            { index: 6, number: '2000' }
+            { index: 1, number: '200' },
+            { index: 2, number: '200' },
+            { index: 3, number: '200' },
+            { index: 4, number: '200' },
+            { index: 5, number: '200' },
+            { index: 6, number: '200' }
         ];
 
         for (let i = 0; i < data.length; i++) {
@@ -145,44 +151,49 @@ const { chromium } = require('playwright');
             const trueSelector = `input[name="invetion_NRM[${i}][check_operation]"][value="true"]`;
             const falseSelector = `input[name="invetion_NRM[${i}][check_operation]"][value="false"]`;
             const numberInput = `input[name="invetion_NRM[${i}][number_operation]"]`;
-        
+            const fileInput = 'input[name="file_2_1"]';
+
             await page.waitForSelector(trueSelector);
             await page.waitForSelector(falseSelector);
-        
+
             const randomOption = Math.random() < 0.5 ? trueSelector : falseSelector;
             await page.check(randomOption);
-        
+
             if (randomOption === trueSelector) {
-                await page.waitForSelector(numberInput);
-                await page.fill(numberInput, '100');
+                if ([1, 2, 4].includes(i)) {
+                    await page.waitForSelector(numberInput);
+                    await page.fill(numberInput, '100');
+                } else if (i === 3) {
+                    await page.waitForSelector(fileInput);
+                    await page.setInputFiles(fileInput, 'D:\\งาน\\playwright\\test_file.jpg');
+                }
+                // i === 5 → ไม่ต้องทำอะไรเพิ่มเติม
             }
         }
 
         //ส่วนที่ 3 : งบประมาณที่ได้รับจัดสรรเพื่อขับเคลื่อนการดำเนินงานตามกลไกการส่งต่อระดับชาติ (National Referral Mechanism : NRM) ในพื้นที่จังหวัด
-        await page.waitForSelector('input[name="budget"]');
-        await page.fill('input[name="budget"]', '20000');
+        await typeInput(page, 'input[name="budget"]', '20000');
 
-        await page.waitForSelector('input[name="budget_result"]');
-        await page.fill('input[name="budget_result"]', '20000');
+        await typeInput(page, 'input[name="budget_result"]', '20000');
 
         //ส่วนที่ 4 : การสนับสนุนเงินกองทุนเพื่อการป้องกันและปราบปรามการค้ามนุษย์
         await page.waitForSelector('input[name="number_request_fund_agency"]');
-        await page.fill('input[name="number_request_fund_agency"]', '200');
+        await page.fill('input[name="number_request_fund_agency"]', '20');
 
         await page.waitForSelector('input[name="number_request_fund_project"]');
-        await page.fill('input[name="number_request_fund_project"]', '2000');
+        await page.fill('input[name="number_request_fund_project"]', '30');
 
         await page.waitForSelector('input[name="number_result_approve_project"]');
-        await page.fill('input[name="number_result_approve_project"]', '2000');
+        await page.fill('input[name="number_result_approve_project"]', '20');
 
         await page.waitForSelector('input[name="number_process_event_project"]');
-        await page.fill('input[name="number_process_event_project"]', '2000');
+        await page.fill('input[name="number_process_event_project"]', '10');
 
         await page.waitForSelector('input[name="number_completed_project"]');
-        await page.fill('input[name="number_completed_project"]', '2000');
+        await page.fill('input[name="number_completed_project"]', '5');
 
         await page.waitForSelector('input[name="number_project"]');
-        await page.fill('input[name="number_project"]', '2000');
+        await page.fill('input[name="number_project"]', '5');
 
         //ปัญหา/อุปสรรค และข้อเสนอแนะ
         await page.waitForSelector('textarea[name="data_Problems[1][problems_obstacles]"]');
@@ -210,18 +221,18 @@ const { chromium } = require('playwright');
         await page.fill('input[name="last_name_reporter"]', 'ผู้รายงาน2'); // นามสกุล
 
         await page.waitForSelector('input[name="position_name_reporter"]');
-        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน3.3'); // ตำแหน่ง
+        await page.fill('input[name="position_name_reporter"]', 'ผู้รายงาน2.1.1'); // ตำแหน่ง
 
         console.log('กรอกข้อมูลผู้รายงานสำเร็จ!');
 
         //การตรวจสอบข้อมูลเบื้องต้นโดย พมจ.
-        await page.waitForSelector('input[name="examine"]'); 
-        await page.check('input[name="examine"]'); // ติ๊ก Checkbox
+        // await page.waitForSelector('input[name="examine"]'); 
+        // await page.check('input[name="examine"]'); // ติ๊ก Checkbox
 
-        await page.waitForSelector('textarea[name="opinion"]');
-        await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
+        // await page.waitForSelector('textarea[name="opinion"]');
+        // await page.fill('textarea[name="opinion"]', 'ไม่มีความเห็นว่า'); // ข้อคิดเห็น/ข้อเสนอแนะ
 
-        console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
+        // console.log('พมจ. ได้ตรวจสอบข้อมูลแล้ว');
 
         console.log('กรอกข้อมูลทั้งหมดสำเร็จ!');
 
